@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(schema: "public")]
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  passwordHash String?
+  createdAt    DateTime      @default(now())
+  folders      Folder[]
+  images       ImageAsset[]
+  tags         Tag[]
+  moodboards   Moodboard[]
+}
+
+model Folder {
+  id        Int           @id @default(autoincrement())
+  user      User          @relation(fields: [userId], references: [id])
+  userId    Int
+  name      String
+  createdAt DateTime      @default(now())
+  images    ImageFolder[]
+
+  @@unique([userId, name], map: "folder_user_name")
+}
+
+model ImageAsset {
+  id            Int           @id @default(autoincrement())
+  user          User          @relation(fields: [userId], references: [id])
+  userId        Int
+  storageUrl    String
+  width         Float
+  height        Float
+  bytes         Int
+  mime          String
+  colorDominant String?
+  caption       String?
+  createdAt     DateTime      @default(now())
+  imageTags     ImageTag[]
+  imageFolders  ImageFolder[]
+  embedding     Embedding?
+
+  @@index([userId, createdAt])
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  name      String
+  createdAt DateTime  @default(now())
+  imageTags ImageTag[]
+
+  @@unique([userId, name], map: "tag_user_unique")
+  @@index([userId])
+}
+
+model ImageTag {
+  image   ImageAsset @relation(fields: [imageId], references: [id])
+  imageId Int
+  tag     Tag        @relation(fields: [tagId], references: [id])
+  tagId   Int
+
+  @@id([imageId, tagId])
+}
+
+model ImageFolder {
+  image    ImageAsset @relation(fields: [imageId], references: [id])
+  imageId  Int
+  folder   Folder     @relation(fields: [folderId], references: [id])
+  folderId Int
+
+  @@id([imageId, folderId])
+}
+
+model Embedding {
+  id      Int        @id @default(autoincrement())
+  image   ImageAsset @relation(fields: [imageId], references: [id])
+  imageId Int        @unique
+  vector  Float[]    @db.Vector(1536)
+}
+
+model Moodboard {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  title     String
+  prompt    String?
+  layoutJson String
+  imageIds  Int[]
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

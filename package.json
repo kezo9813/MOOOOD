@@ -1,0 +1,53 @@
+{
+  "name": "moodboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest",
+    "test:e2e": "playwright test",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "6.1.0",
+    "@prisma/client": "5.14.0",
+    "@supabase/supabase-js": "2.45.1",
+    "bcryptjs": "2.4.3",
+    "clsx": "2.1.1",
+    "html-to-image": "1.11.11",
+    "mime-types": "2.1.35",
+    "next": "14.2.3",
+    "next-auth": "4.24.6",
+    "openai": "4.52.2",
+    "pg": "8.11.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "sharp": "0.33.3",
+    "tailwind-merge": "2.3.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.43.1",
+    "@testing-library/jest-dom": "6.4.2",
+    "@types/bcryptjs": "2.4.2",
+    "@types/jest": "29.5.12",
+    "@types/mime-types": "2.1.4",
+    "@types/node": "20.11.30",
+    "@types/react": "18.2.75",
+    "@types/react-dom": "18.2.24",
+    "autoprefixer": "10.4.17",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.3",
+    "jest": "29.7.0",
+    "postcss": "8.4.35",
+    "prisma": "5.14.0",
+    "tailwindcss": "3.4.3",
+    "ts-jest": "29.1.2",
+    "ts-node": "10.9.2",
+    "tsx": "4.7.1",
+    "typescript": "5.4.5"
+  }
+}
